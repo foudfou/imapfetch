@@ -4,13 +4,9 @@ var fs = require('fs'),
 var Imap = require('imap');
 
 
-var MDA      = 'maildrop';
-var MDA_ARGS = [];
-
-
-function getStdout(cmd) {
-  var stdout = child.execSync(cmd);
-  return stdout.toString().trim();
+function die(retcode, msg) {
+  console.error(msg);
+  process.exit(retcode);
 }
 
 function openInbox(cb) {
@@ -19,21 +15,19 @@ function openInbox(cb) {
 }
 
 
-var host = 'imap.domain.tld';
+var configPath = process.argv[2];
+if (! fs.existsSync(configPath)) {
+  die(2, 'Config file does not exist');
+}
 
-var imap = new Imap({
-  user: 'user@domain.tld',
-  password: getStdout("gpg -q --for-your-eyes-only --no-tty -d "
-                      + "~/.authinfo.gpg |getauth.pl " + host),
-  host: host,
-  port: 993,
-  tls: true,
-  tlsOptions: {
-    ca: [ fs.readFileSync('/etc/ssl/certs/My_Certificate_Authority.pem') ]
-  },
-  keepalive: true,
-  // debug: function(str){console.log("DEBUG: "+str);}
-});
+try {
+  var config = require(configPath);
+} catch(err) {
+  die(3, 'Parsing error: ' + err);
+}
+
+
+var imap = new Imap(config.imap);
 
 imap.once('ready', function() {
   // we need to open INBOX once to trigger `mail'.
@@ -56,7 +50,8 @@ imap.on('mail', function(numNewMsgs) {
         var prefix = '(#' + seqno + ') ';
         msg.on('body', function(stream, info) {
           console.log(prefix + 'Body');
-          var mda = child.spawn(MDA, MDA_ARGS, {stdio: ['pipe', 1, 2]});
+          var mda = child.spawn(config.mda.cmd, config.mda.args,
+                                {stdio: ['pipe', 1, 2]});
           stream.pipe(mda.stdin);
         });
         msg.once('attributes', function(attrs) {

@@ -1,0 +1,32 @@
+var fs = require('fs'),
+    child = require('child_process');
+
+
+function getStdout(cmd) {
+  var stdout = child.execSync(cmd);
+  return stdout.toString().trim();
+}
+
+
+var host = 'imap.example.com';
+var imapConfig = {
+  user: 'user@example.com',
+  password: getStdout("gpg -q --for-your-eyes-only --no-tty -d "
+                      + "~/.authinfo.gpg |getauth.pl " + host),
+  host: host,
+  port: 993,
+  tls: true,
+  tlsOptions: {
+    ca: [ fs.readFileSync('/etc/ssl/certs/My_Certificate_Authority.pem') ]
+  },
+  keepalive: true,
+  // debug: function(str){console.log("DEBUG: "+str);}
+};
+
+var MDA = {
+  cmd: 'maildrop',
+  args: []
+};
+
+exports.imap = imapConfig;
+exports.mda  = MDA;
