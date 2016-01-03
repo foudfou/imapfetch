@@ -1,0 +1,15 @@
+{
+  "name": "imapfetch",
+  "version": "0.0.1",
+  "description": "Dump imap client for fetching messages.",
+  "main": "index.js",
+  "dependencies": {
+    "imap": "^0.8.16"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [ "imap", "mail" ],
+  "author": "foudfou",
+  "license": "ISC"
+}
