@@ -1,0 +1,13 @@
+[Unit]
+Description=Imapfetch - pop messages from an IMAP server
+After=network.target
+
+[Service]
+Type=simple
+ExecStart=/usr/bin/imapfetch %h/.config/imapfetch/%I.js
+Restart=always
+RestartSec=20
+
+[Install]
+WantedBy=default.target
+

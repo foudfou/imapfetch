@@ -11,8 +11,8 @@ function getStdout(cmd) {
 var host = 'imap.example.com';
 var imapConfig = {
   user: 'user@example.com',
-  password: getStdout("gpg -q --for-your-eyes-only --no-tty -d "
-                      + "~/.authinfo.gpg |getauth.pl " + host),
+  password: getStdout("gpg -q --for-your-eyes-only --no-tty -d ~/.authinfo.gpg"
+                      + " |/usr/local/bin/getauth.pl " + host),
   host: host,
   port: 993,
   tls: true,
