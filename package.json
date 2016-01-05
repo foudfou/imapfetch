@@ -3,6 +3,7 @@
   "version": "0.0.1",
   "description": "Dump imap client for fetching messages.",
   "main": "index.js",
+  "bin": "./index.js",
   "dependencies": {
     "imap": "^0.8.16"
   },

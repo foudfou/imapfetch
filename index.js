@@ -1,3 +1,5 @@
+#!/usr/bin/env node
+
 var fs = require('fs'),
     child = require('child_process'),
     inspect = require('util').inspect;
