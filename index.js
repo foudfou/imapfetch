@@ -55,6 +55,9 @@ function fetchMessages(criteria) {
       msg.on('body', function(stream, info) {
         var mda = child.spawn(config.mda.cmd, config.mda.args,
                               {stdio: ['pipe', 1, 2]});
+        mda.on('error', function(err) {
+          console.error('Failed to start MDA: ' + err);
+        });
         stream.pipe(mda.stdin);
       });
     });
