@@ -25,7 +25,7 @@ var imapConfig = {
 
 var MDA = {
   cmd: 'maildrop',
-  args: []
+  args: ['/home/scott/.mailfilters/example_com'] // full-path!
 };
 
 exports.imap = imapConfig;
