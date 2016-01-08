@@ -32,6 +32,7 @@ try {
 var imap = new Imap(config.imap);
 
 imap.once('ready', function() {
+  console.info("Connected to IMAP server: "+config.imap.host);
   var inbox = openInbox(function(err, box) {
     if (err) throw err;
 
