@@ -68,6 +68,9 @@ function fetchMessages(criteria) {
     f.once('end', function() {
       imap.addFlags(uids, '\\Deleted', function(err) {
         if (err) console.error("addFlags failed: " + err);
+        imap.expunge(uids, function(err) {  // uids for UIDPLUS
+          if (err) console.error("Expunge failed: " + err);
+        });
       });
     });
   });
@@ -83,10 +86,10 @@ imap.once('end', function() {
 
 
 function quit() {
-  imap.expunge(function(err) {  // uids can be supplied as fist arg
-    if (err) console.error("Expunge failed: " + err);
+  var autoExpunge = true;
+  imap.closeBox(autoExpunge, function() { // on currently opened box
+    imap.end();
   });
-  imap.end();
 }
 
 process.on('SIGINT', function() {
