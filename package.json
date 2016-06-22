@@ -10,6 +10,10 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/foudfou/imapfetch.git"
+  },
   "keywords": [ "imap", "mail" ],
   "author": "foudfou",
   "license": "ISC"
