@@ -1,8 +1,7 @@
 #!/usr/bin/env node
 
 var fs = require('fs'),
-    child = require('child_process'),
-    inspect = require('util').inspect;
+    child = require('child_process');
 var Imap = require('imap');
 
 
@@ -77,6 +76,8 @@ function fetchMessages(criteria) {
 };
 
 imap.on('error', function(err) {
+  if (err.source === 'socket-timeout')
+    quit();
   console.error("Connection error: " + err);
 });
 
