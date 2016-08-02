@@ -51,7 +51,7 @@ function fetchMessages(criteria) {
 
     var f = imap.fetch(uids, { bodies: '' });
     f.on('message', function(msg, seqno) {
-      console.info('Downloaded message #%d', seqno);
+      console.info('Downloaded message #%d from %s', seqno, config.imap.host);
       msg.on('body', function(stream, info) {
         var mda = child.spawn(config.mda.cmd, config.mda.args,
                               {stdio: ['pipe', 1, 2]});
